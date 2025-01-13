@@ -1,7 +1,8 @@
 import streamlit as st
 import pandas as pd
 import requests
-API_URL = "https://stock.cmcts.ai/c-agent/api/v1/prediction/d8e6fd42-9a4f-4cb5-9820-62356eda3758"
+
+API_URL = st.secrets["API_URL"]
 def query(payload):
     response = requests.post(API_URL, json=payload)
     return response.json()
@@ -56,8 +57,6 @@ if uploaded_file and not st.session_state.file_processed:
         response = query({
             "question": f"""Question: {question}
         True answer: {true_answer}""",
-        # "chatId": "https://stock.cmcts.ai/c-agent/api/v1/prediction/84044770-5696-4600-ab12-377985460485"
-        # "stream": True
         })
         result = response['agentReasoning'][1]['state']
         st.session_state.realAnswer_fill_values[index, "Real answer"] = result["real_answer"]
